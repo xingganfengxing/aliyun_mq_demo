@@ -2,6 +2,7 @@ package com.xzy.mq.producer;
 
 import com.aliyun.openservices.ons.api.*;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSON;
+import com.xzy.mq.common.AbstractMessageConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ import java.util.Properties;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig {
+
+    public static final String DEFAULT_KEY = "demo_key";
+
+    public static final String DEFAULT_TAG = "demo_tag";
 
     /**
      * 消息topic

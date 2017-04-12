@@ -1,6 +1,8 @@
 package com.xzy.mq.producer;
 
 import com.aliyun.openservices.ons.api.*;
+import com.aliyun.openservices.ons.api.SendResult;
+import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.*;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSON;
 import com.xzy.mq.common.AbstractMessageConfig;
 import lombok.AllArgsConstructor;
@@ -70,12 +72,13 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig {
         }
     }
 
-    public void sendMsg(T message){
+    public SendResult sendMsg(T message){
 
         Message msg = new Message(topic, getTag(message), getKey(message), JSON.toJSONString(message).getBytes());
         SendResult sendResult = producer.send(msg);
         log.info("Send Message Success.%nTopic is {}.%nMessage is {}.%nSendResult is {}.", this.topic,
                 JSON.toJSONString(message), JSON.toJSONString(sendResult));
+        return sendResult;
     }
 
     public abstract String getKey(T message);

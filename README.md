@@ -19,4 +19,4 @@ Aliyun MQ Demo for Java.
 
 ### Code Details
 
-Please visit [src/main/java](https://github.com/RuzzZZ/aliyun_mq_demo) for code details.
+Please visit [src/main/java](https://github.com/RuzzZZ/aliyun_mq_demo/tree/master/src/main/java/com/xzy/mq) for code details.

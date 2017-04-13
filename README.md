@@ -1,6 +1,6 @@
 Aliyun MQ Demo
 ========================================
-Aliyun MQ for Java.
+Aliyun MQ Demo for Java.
 
 
 ### Components

@@ -12,7 +12,7 @@ public class FirstDemoMessageProducer extends AbstractMessageProducer<FirstDemoM
 
     @Override
     public String getKey(FirstDemoMessage message) {
-        return String.valueOf(message.getSerialId());
+        return "serialId:" + String.valueOf(message.getSerialId());
     }
 
     @Override

@@ -13,11 +13,11 @@ public abstract class AbstractMessageConfig {
      * 阿里云的accessKey
      */
 //    @Value("#{configProperties['ons.access.key']}")
-    private String accessKey = "LTAIfIUA4FMmzhRU";
+    private String accessKey = "******";
 
     /**
      * 阿里云的secretKey
      */
 //    @Value("#{configProperties['ons.access.secret']}")
-    private String secretKey = "hkrfVoMKQ0fV7tKOXlgQz5eQ82BxO4";
+    private String secretKey = "******";
 }

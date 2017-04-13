@@ -1,17 +1,14 @@
 package com.xzy.mq.producer;
 
 import com.aliyun.openservices.ons.api.*;
-import com.aliyun.openservices.ons.api.SendResult;
-import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.producer.*;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSON;
 import com.xzy.mq.common.AbstractMessageConfig;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.Properties;
 
 /**
@@ -19,9 +16,8 @@ import java.util.Properties;
  */
 @Slf4j
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig {
+@EqualsAndHashCode(callSuper = false)
+public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig implements InitializingBean, DisposableBean {
 
     public static final String DEFAULT_KEY = "demo_key";
 
@@ -42,25 +38,25 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig {
      */
     private volatile Producer producer;
 
-    @PostConstruct
-    public void initProducer() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         if (producer == null) {
             synchronized (AbstractMessageProducer.class) {
-                if(producer == null){
-                    Properties properties = new Properties();
-                    properties.put(PropertyKeyConst.ProducerId, this.getProducerId());// 您在MQ控制台创建的Producer ID
-                    properties.put(PropertyKeyConst.AccessKey, this.getAccessKey());// 鉴权用AccessKey，在阿里云服务器管理控制台创建
-                    properties.put(PropertyKeyConst.SecretKey, this.getSecretKey());// 鉴权用SecretKey，在阿里云服务器管理控制台创建
-                    Producer producer = ONSFactory.createProducer(properties);
-                    // 在发送消息前，必须调用start方法来启动Producer，只需调用一次即可
-                    producer.start();
-                }
+                Properties properties = new Properties();
+                properties.put(PropertyKeyConst.ProducerId, this.getProducerId());// 您在MQ控制台创建的Producer ID
+                properties.put(PropertyKeyConst.AccessKey, this.getAccessKey());// 鉴权用AccessKey，在阿里云服务器管理控制台创建
+                properties.put(PropertyKeyConst.SecretKey, this.getSecretKey());// 鉴权用SecretKey，在阿里云服务器管理控制台创建
+                producer = ONSFactory.createProducer(properties);
+                // 在发送消息前，必须调用start方法来启动Producer，只需调用一次即可
+                producer.start();
+                if(producer == null)
+                    log.error("producer is null");
             }
         }
     }
 
-    @PreDestroy
-    public void destroyProducers() throws InterruptedException {
+    @Override
+    public void destroy() throws Exception {
         if (producer != null) {
             synchronized (AbstractMessageProducer.class) {
                 if (producer != null) {
@@ -72,7 +68,7 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig {
         }
     }
 
-    public SendResult sendMsg(T message){
+    public SendResult sendMsg(T message) {
 
         Message msg = new Message(topic, getTag(message), getKey(message), JSON.toJSONString(message).getBytes());
         SendResult sendResult = producer.send(msg);

@@ -46,6 +46,11 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig i
                 properties.put(PropertyKeyConst.ProducerId, this.getProducerId());// 您在MQ控制台创建的Producer ID
                 properties.put(PropertyKeyConst.AccessKey, this.getAccessKey());// 鉴权用AccessKey，在阿里云服务器管理控制台创建
                 properties.put(PropertyKeyConst.SecretKey, this.getSecretKey());// 鉴权用SecretKey，在阿里云服务器管理控制台创建
+
+                //基于事物的producer
+//                LocalTransactionCheckerImpl localTransactionChecker = new LocalTransactionCheckerImpl();
+//                TransactionProducer transactionProducer = ONSFactory.createTransactionProducer(properties, localTransactionChecker);
+                //2.普通的producer
                 producer = ONSFactory.createProducer(properties);
                 // 在发送消息前，必须调用start方法来启动Producer，只需调用一次即可
                 producer.start();

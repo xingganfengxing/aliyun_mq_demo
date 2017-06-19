@@ -73,9 +73,14 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig i
         }
     }
 
+    /**
+     * 以JSON形式发送message
+     * consumer在消费的时候需采用相同的解析方式
+     * @param message
+     * @return
+     */
     public SendResult sendMsg(T message) {
-
-        Message msg = new Message(topic, getTag(message), getKey(message), JSON.toJSONString(message).getBytes());
+        Message msg = new Message(topic, "*", getKey(message), JSON.toJSONString(message).getBytes());
         SendResult sendResult = producer.send(msg);
         log.info("Send Message Success.%nTopic is {}.%nMessage is {}.%nSendResult is {}.", this.topic,
                 JSON.toJSONString(message), JSON.toJSONString(sendResult));
@@ -83,6 +88,4 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig i
     }
 
     public abstract String getKey(T message);
-
-    public abstract String getTag(T message);
 }

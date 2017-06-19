@@ -14,9 +14,4 @@ public class FirstDemoMessageProducer extends AbstractMessageProducer<FirstDemoM
     public String getKey(FirstDemoMessage message) {
         return "serialId:" + String.valueOf(message.getSerialId());
     }
-
-    @Override
-    public String getTag(FirstDemoMessage message) {
-        return DEFAULT_TAG;
-    }
 }

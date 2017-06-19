@@ -20,7 +20,7 @@
     </bean>
 
     <bean id="firstDemoMessageProducer" class="com.xzy.mq.producer.impl.FirstDemoMessageProducer" lazy-init="false">
-        <property name="topic" value="${ons.topic}"/>
-        <property name="producerId" value="${ons.producer}"/>
+        <property name="topic" value="${ons.first.demo.topic}"/>
+        <property name="producerId" value="${ons.first.demo.producer}"/>
     </bean>
 </beans>

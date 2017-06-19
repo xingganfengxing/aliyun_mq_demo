@@ -3,6 +3,7 @@ package com.xzy.mq.consumer;
 import com.aliyun.openservices.ons.api.Message;
 import com.google.common.collect.Maps;
 import com.xzy.mq.common.AbstractMessageConfig;
+import com.xzy.mq.common.MD5Helper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -41,9 +42,9 @@ public class CommonMessageConsumer extends AbstractMessageConfig {
                 Type messageType = ((ParameterizedType) interfaceType).getActualTypeArguments()[0];
                 String messageTypeName = messageType.toString().replace("class ", "");
                 String simpleTypeName = messageTypeName.substring(messageTypeName.lastIndexOf(".") + 1);
-
-                if (!subscriberMap.containsKey(simpleTypeName)) {
-                    subscriberMap.put(simpleTypeName, subscriber);
+                String subscriberKey = generateMessageTag(simpleTypeName);
+                if (!subscriberMap.containsKey(subscriberKey)) {
+                    subscriberMap.put(subscriberKey, subscriber);
                 }
             }
         }
@@ -52,7 +53,7 @@ public class CommonMessageConsumer extends AbstractMessageConfig {
     public void operateMessageTemplate(Message message) throws NoSuchAlgorithmException {
         AbstractSubscriber subscriber = subscriberMap.get(message.getTag());
         if (subscriber != null) {
-            String hashed = new String(message.getBody());
+            String hashed = MD5Helper.sum(message.getBody());
             if (!messageKeys.contains(hashed)) {//尽量保证集群每个节点消息只被消费一次，后期应使用redis做消息去重
                 messageKeys.add(hashed);
                 subscriber.operateMessage(message);

@@ -23,4 +23,24 @@
         <property name="topic" value="${ons.first.demo.topic}"/>
         <property name="producerId" value="${ons.first.demo.producer}"/>
     </bean>
+
+    <!--  -->
+    <bean id="firstDemoConsumerEventListener" class="com.xzy.mq.consumer.ConsumerEventListener">
+        <property name="processConsumers">
+            <map>
+                <entry key="${ons.first.demo.topic}" value-ref="firstDemoMessageConsumer"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="firstDemoMessageConsumer" class="com.xzy.mq.consumer.CommonMessageConsumer">
+        <property name="consumerId" value=""/>
+        <property name="subscribers">
+            <list>
+                <ref bean="firstDemoSubscriber"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="firstDemoSubscriber" class="com.xzy.mq.consumer.demo.subscriber.FirstDemoSubscriber"/>
 </beans>

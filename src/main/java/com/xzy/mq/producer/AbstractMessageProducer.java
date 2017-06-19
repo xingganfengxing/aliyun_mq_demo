@@ -21,8 +21,6 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig i
 
     public static final String DEFAULT_KEY = "demo_key";
 
-    public static final String DEFAULT_TAG = "demo_tag";
-
     /**
      * 消息topic
      */
@@ -54,7 +52,7 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig i
                 producer = ONSFactory.createProducer(properties);
                 // 在发送消息前，必须调用start方法来启动Producer，只需调用一次即可
                 producer.start();
-                if(producer == null)
+                if (producer == null)
                     log.error("producer is null");
             }
         }
@@ -76,11 +74,15 @@ public abstract class AbstractMessageProducer<T> extends AbstractMessageConfig i
     /**
      * 以JSON形式发送message
      * consumer在消费的时候需采用相同的解析方式
+     *
      * @param message
      * @return
      */
     public SendResult sendMsg(T message) {
-        Message msg = new Message(topic, "*", getKey(message), JSON.toJSONString(message).getBytes());
+        //消息的tag,也是订阅消息时的key
+        String subscriberKey = generateMessageTag(message.getClass().getSimpleName());
+//        String tag = message.getClass().getSimpleName();
+        Message msg = new Message(topic, subscriberKey, getKey(message), JSON.toJSONString(message).getBytes());
         SendResult sendResult = producer.send(msg);
         log.info("Send Message Success.%nTopic is {}.%nMessage is {}.%nSendResult is {}.", this.topic,
                 JSON.toJSONString(message), JSON.toJSONString(sendResult));

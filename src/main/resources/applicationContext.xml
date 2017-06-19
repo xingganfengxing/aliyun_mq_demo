@@ -8,6 +8,9 @@
 
     <context:property-placeholder location="classpath:config.properties"/>
 
+    <!-- 自动扫描包名 -->
+    <context:component-scan base-package="com.xzy.mq" />
+
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
             <list>

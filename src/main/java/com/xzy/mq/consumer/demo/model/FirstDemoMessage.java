@@ -1,4 +1,4 @@
-package com.xzy.mq.producer.model;
+package com.xzy.mq.consumer.demo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

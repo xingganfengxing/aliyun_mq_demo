@@ -22,18 +22,18 @@ public class FirstDemoMQTest {
     private FirstDemoMessageProducer producer;
 
     @Test
-    public void sendMsg(){
-        FirstDemoMessage firstDemoMessage = new FirstDemoMessage("Test",100L);
+    public void sendMsg() {
+        FirstDemoMessage firstDemoMessage = new FirstDemoMessage("Test", 100L);
         SendResult sendResult = producer.sendMsg(firstDemoMessage);
-        System.out.println(String.format("SendResult:%s",sendResult));
+        System.out.println(String.format("SendResult:%s", sendResult));
     }
 
     @Test
-    public void receiveMsg(){
+    public void receiveMsg() {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.ConsumerId, "CID_test_first_mq_consumer");// 您在MQ控制台创建的Consumer ID
-        properties.put(PropertyKeyConst.AccessKey, "LTAIfIUA4FMmzhRU");// 鉴权用AccessKey，在阿里云服务器管理控制台创建
-        properties.put(PropertyKeyConst.SecretKey, "hkrfVoMKQ0fV7tKOXlgQz5eQ82BxO4");// 鉴权用SecretKey，在阿里云服务器管理控制台创建
+        properties.put(PropertyKeyConst.AccessKey, "*******");// 鉴权用AccessKey，在阿里云服务器管理控制台创建
+        properties.put(PropertyKeyConst.SecretKey, "*******");// 鉴权用SecretKey，在阿里云服务器管理控制台创建
         Consumer consumer = ONSFactory.createConsumer(properties);
         consumer.subscribe("tp_test_first_mq_topic", "*", new MessageListener() {
             public Action consume(Message message, ConsumeContext context) {

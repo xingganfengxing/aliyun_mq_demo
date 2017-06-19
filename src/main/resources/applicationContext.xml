@@ -19,6 +19,5 @@
     <bean id="firstDemoMessageProducer" class="com.xzy.mq.producer.impl.FirstDemoMessageProducer" lazy-init="false">
         <property name="topic" value="${ons.topic}"/>
         <property name="producerId" value="${ons.producer}"/>
-
     </bean>
 </beans>
